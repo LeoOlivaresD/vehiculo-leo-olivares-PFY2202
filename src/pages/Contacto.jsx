@@ -1,7 +1,8 @@
+import Cabecera from "../components/Header";
 function Contacto() {
   return (
     <div className="container mt-5">
-      <h2 className="mb-4 text-secondary">Contáctanos</h2>
+      <Cabecera title="Contáctanos"/>
       <form className="p-4 border rounded shadow-sm bg-light">
         <div className="mb-3">
           <label className="form-label">Nombre</label>
