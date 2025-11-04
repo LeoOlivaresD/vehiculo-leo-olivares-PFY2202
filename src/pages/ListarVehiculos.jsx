@@ -2,10 +2,7 @@ import { useEffect } from "react";
 import Cabecera from "../components/Header";
 
 function ListarVehiculos({ vehiculos = [] }) {
-  useEffect(() => {
-    console.log("Vehículos actualizados:", vehiculos);
-  }, [vehiculos]);
-
+  useEffect(() => { console.log("Vehículos actualizados:", vehiculos);}, [vehiculos]);
   return (
     <div>
       <Cabecera title="Lista de Vehículos" />
