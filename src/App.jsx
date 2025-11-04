@@ -11,7 +11,7 @@ function App() {
   const [vehiculos, setVehiculos] = useState([]);
   return (
     <Router>
-      <div className="container">
+      <div className="w-100">
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/quienes-somos" element={<QuienesSomos />} />

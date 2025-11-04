@@ -19,9 +19,6 @@ function Home() {
         <p className="lead mb-4">
           Explora nuestra selección de autos nuevos y usados con confianza y estilo.
         </p>
-        <a href="/registro" className="btn btn-primary btn-lg px-4">
-          Registrar Vehículo
-        </a>
       </div>
     </div>
   );
