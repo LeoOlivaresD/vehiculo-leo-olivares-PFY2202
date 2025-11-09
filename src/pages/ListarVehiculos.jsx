@@ -1,16 +1,17 @@
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import Cabecera from "../components/Header";
 import { useVehiculos } from "../context/VehiculosContext";
 
 function ListarVehiculos() {
+  const navigate = useNavigate();
   const { vehiculosInventario } = useVehiculos();
   const [filtro, setFiltro] = useState({
-    tipo: "todos", // marca, precio, año, todos
+    tipo: "todos",
     valor: "",
   });
   const [vehiculosFiltrados, setVehiculosFiltrados] = useState([]);
 
-  // Actualizar vehículos filtrados cuando cambie el inventario o el filtro
   useEffect(() => {
     filtrarVehiculos();
   }, [vehiculosInventario, filtro]);
@@ -35,6 +36,10 @@ function ListarVehiculos() {
 
   const limpiarFiltro = () => {
     setFiltro({ tipo: "todos", valor: "" });
+  };
+
+  const verDetalle = (id) => {
+    navigate(`/detalleVehiculo/${id}`);
   };
 
   return (
@@ -95,12 +100,13 @@ function ListarVehiculos() {
                 <th>Precio</th>
                 <th>Año</th>
                 <th>Descripción</th>
+                <th>Acciones</th>
               </tr>
             </thead>
             <tbody>
               {vehiculosFiltrados.length === 0 ? (
                 <tr>
-                  <td colSpan="5" className="text-center">
+                  <td colSpan="6" className="text-center">
                     {vehiculosInventario.length === 0
                       ? "No hay vehículos registrados"
                       : "No se encontraron vehículos con ese filtro"}
@@ -108,12 +114,27 @@ function ListarVehiculos() {
                 </tr>
               ) : (
                 vehiculosFiltrados.map((v) => (
-                  <tr key={v.id}>
+                  <tr
+                    key={v.id}
+                    style={{ cursor: "pointer" }}
+                    onClick={() => verDetalle(v.id)}
+                  >
                     <td>{v.marca}</td>
                     <td>{v.modelo}</td>
                     <td>${v.precio}</td>
                     <td>{v.año}</td>
                     <td>{v.descripcion}</td>
+                    <td>
+                      <button
+                        className="btn btn-sm btn-info"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          verDetalle(v.id);
+                        }}
+                      >
+                        Ver Detalle
+                      </button>
+                    </td>
                   </tr>
                 ))
               )}
