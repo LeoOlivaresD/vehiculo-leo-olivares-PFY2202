@@ -1,9 +1,7 @@
-import { createContext, useState, useContext } from "react";
+import { createContext, useState, useContext, useEffect } from "react";
 
-// Crear el contexto
 const VehiculosContext = createContext();
 
-// Hook personalizado para usar el contexto
 // eslint-disable-next-line react-refresh/only-export-components
 export const useVehiculos = () => {
   const context = useContext(VehiculosContext);
@@ -13,18 +11,38 @@ export const useVehiculos = () => {
   return context;
 };
 
-// Proveedor del contexto
 export const VehiculosProvider = ({ children }) => {
-  const [vehiculosInventario, setVehiculosInventario] = useState([]);
-  const [vehiculosPosibleCompra, setVehiculosPosibleCompra] = useState([]);
+  // Cargar datos desde localStorage al iniciar
+  const [vehiculosInventario, setVehiculosInventario] = useState(() => {
+    const saved = localStorage.getItem("vehiculosInventario");
+    return saved ? JSON.parse(saved) : [];
+  });
 
-  // Agregar vehículo al inventario
+  const [vehiculosPosibleCompra, setVehiculosPosibleCompra] = useState(() => {
+    const saved = localStorage.getItem("vehiculosPosibleCompra");
+    return saved ? JSON.parse(saved) : [];
+  });
+
+  // Guardar en localStorage cada vez que cambien los datos
+  useEffect(() => {
+    localStorage.setItem(
+      "vehiculosInventario",
+      JSON.stringify(vehiculosInventario)
+    );
+  }, [vehiculosInventario]);
+
+  useEffect(() => {
+    localStorage.setItem(
+      "vehiculosPosibleCompra",
+      JSON.stringify(vehiculosPosibleCompra)
+    );
+  }, [vehiculosPosibleCompra]);
+
   const agregarVehiculo = (vehiculo) => {
-    const nuevoVehiculo = { ...vehiculo, id: Date.now() }; // Agregamos un ID único
+    const nuevoVehiculo = { ...vehiculo, id: Date.now() };
     setVehiculosInventario([...vehiculosInventario, nuevoVehiculo]);
   };
 
-  // Marcar vehículo como "posible compra"
   const marcarComoPosibleCompra = (id) => {
     const vehiculo = vehiculosInventario.find((v) => v.id === id);
     if (vehiculo) {
@@ -33,7 +51,6 @@ export const VehiculosProvider = ({ children }) => {
     }
   };
 
-  // Desmarcar vehículo (devolverlo al inventario)
   const desmarcarVehiculo = (id) => {
     const vehiculo = vehiculosPosibleCompra.find((v) => v.id === id);
     if (vehiculo) {
