@@ -1,8 +1,10 @@
 import { useState } from "react";
 import Cabecera from "../components/Header";
+import { useVehiculos } from "../context/VehiculosContext";
 
-//Se crea un estado local llamado form, que representa los datos del formulario.
-function RegistrarVehiculo({ vehiculos, setVehiculos }) {
+function RegistrarVehiculo() {
+  const { agregarVehiculo } = useVehiculos();
+
   const [form, setForm] = useState({
     marca: "",
     modelo: "",
@@ -11,20 +13,16 @@ function RegistrarVehiculo({ vehiculos, setVehiculos }) {
     descripcion: "",
   });
 
-  //Con esta funcion se actualiza el estado del formulario, con los 3 puntos (...) se copian todas las propiedades actuales del objeto form y luego se actualiza la propiedad correspondiente al campo que se ha modificado.
-  //Ademas con e.target.name se obtiene el nombre del campo que ha cambiado y con e.target.value se obtiene su nuevo valor. Ej (Si el usuario escribe en el campo "marca", e.target.name sera "marca" y e.target.value sera el valor que el usuario ha escrito)
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
 
-  //Definimos la función que se ejecuta cuando el usuario envía el formulario (hacer clic en el botón "Registrar").
   const handleSubmit = (e) => {
-    e.preventDefault(); // Evita que la página se recargue al enviar el formulario.
-    setVehiculos([...vehiculos, form]); //Esta línea agrega el nuevo vehículo al array de vehículos. (form representa el nuevo vehículo que se está registrando
-    setForm({ marca: "", modelo: "", precio: "", año: "", descripcion: "" }); // Limpia el formulario después de enviarlo.
+    e.preventDefault();
+    agregarVehiculo(form); // Usamos la función del Context
+    setForm({ marca: "", modelo: "", precio: "", año: "", descripcion: "" });
   };
 
-  //Formulario de registro de vehículo ( en el atributo onSubmit se llama a la función handleSubmit cuando el formulario se envía)
   return (
     <div>
       <Cabecera title="Registro de Vehículo" />
