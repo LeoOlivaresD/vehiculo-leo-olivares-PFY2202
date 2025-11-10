@@ -57,7 +57,7 @@ function RegistrarVehiculo() {
       nuevosErrores.descripcion = "La descripción es obligatoria";
     } else if (form.descripcion.trim().length < 5) {
       nuevosErrores.descripcion =
-        "La descripción debe tener al menos 10 caracteres";
+        "La descripción debe tener al menos 5 caracteres";
     }
 
     return nuevosErrores;
